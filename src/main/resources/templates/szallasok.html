@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Szállások</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./szallasok.css">
+    <link rel="stylesheet" href="./contact.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul class="navbar">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Kezdőlap</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/szallasok">Szállások</a>
+                </li>
+                <li sec:authorize="hasAuthority('ROLE_vendeglato')" class="nav-item">
+                    <a class="nav-link" href="/add">Szállás létrehozása</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">Kapcsolat</a>
+                </li>
+                <li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item">
+                    <a class="nav-link" href="/admin">ADMIN</a>
+                </li>
+                <li sec:authorize="!isAuthenticated()" class="nav-item" style="float:right">
+                    <a class="nav-link active" href="/login">Bejelentkezés</a>
+                </li>
+                <li sec:authorize="!isAuthenticated()" class="nav-item" style="float:right">
+                    <a class="nav-link" href="/register">Regisztráció</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item" style="float:right">
+                    <a class="nav-link" href="/profil">Profil</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item" style="float:right">
+                    <a class="nav-link" href="/logout">Kijelentkezés</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <div class="sidebar">
+            <h3>Kulcsszavak</h3>
+            <div class="keywords" th:each="kulcsszo : ${kulcsszavak}">
+                <span class="keyword" th:text="${kulcsszo}"><button>&times;</button></span>
+            </div>
+
+            <h3>Ár</h3>
+            <div class="price-range">
+                <input type="range" min="0" max="15000" value="7500">
+                <label th:text="'0-15000 Ft/Fő/Éj'"></label>
+            </div>
+
+            <h3>Extrák</h3>
+            <div class="extras">
+                <label><input type="checkbox"> Televízió</label>
+                <label><input type="checkbox"> Klíma</label>
+                <label><input type="checkbox"> Internet</label>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="search-bar">
+                <form th:action="@{/search}" method="get">
+                    <input type="text" name="kereses" placeholder="Keresés" th:value="${kereses}">
+                    <button class="search-button" type="submit">Keresés</button>
+                </form>
+            </div>
+
+            <div class="sort-options">
+                <button class="sort-button" th:each="sort : ${sortOptions}" th:text="${sort.label}" th:classappend="${sort.active ? 'active' : ''}"></button>
+            </div>
+
+            <div class="accommodation-grid">
+                <div class="accommodation-card" th:each="szallas : ${szallasok}" onclick="redirectToDetails()" style="cursor: pointer;">
+                    <img src="./kepek/szobakep.jpg" alt="Szállás">
+                    <div class="accommodation-info">
+                        <p th:text="${szallas.nev}">Szállás</p>
+                        <p th:text="${szallas.ar + ' Ft/Fő/Éj'}">Ár</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-column">
+            <h3 class="footer-title">Rólunk</h3>
+            <ul class="footer-list">
+                <li class="footer-list-item"><a href="https://git-okt.sed.inf.szte.hu/2024-ib153i-3-szallas" target="_blank">GitLab elérhetőség</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3 class="footer-title">Nem vagy még tag?</h3>
+            <ul class="footer-list">
+                <li class="footer-list-item"><a href="/register">Regisztráció</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3 class="footer-title">Kérdésed van?</h3>
+            <ul class="footer-list">
+                <li class="footer-list-item"><a href="/contact">Kapcsolat</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        function redirectToDetails() {
+            window.location.href = "szallasadatok.html";
+        }
+    </script>
+</body>
+</html>

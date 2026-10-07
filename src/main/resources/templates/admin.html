@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <title>Admin</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./admin.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul class="navbar">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Kezdőlap</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/szallasok">Szállások</a>
+                </li>
+                <li sec:authorize="hasAuthority('ROLE_vendeglato')" class="nav-item">
+                    <a class="nav-link" href="/add">Szállás létrehozása</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">Kapcsolat</a>
+                </li>
+                <li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item">
+                    <a class="nav-link active" href="/admin">ADMIN</a>
+                </li>
+                <li sec:authorize="!isAuthenticated()" class="nav-item" style="float:right">
+                    <a class="nav-link active" href="/login">Bejelentkezés</a>
+                </li>
+                <li sec:authorize="!isAuthenticated()" class="nav-item" style="float:right">
+                    <a class="nav-link" href="/register">Regisztráció</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item" style="float:right">
+                    <a class="nav-link" href="/profil">Profil</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item" style="float:right">
+                    <a class="nav-link" href="/logout">Kijelentkezés</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Admin Panel</h1>
+
+        <!-- Felhasználók kezelése -->
+        <div class="admin-section">
+            <h2>Felhasználók kezelése</h2>
+
+            <table class="admin-table">
+
+                <tr>
+                    <th>ID</th>
+                    <th>Név</th>
+                    <th>Email</th>
+                    <th>Műveletek</th>
+                </tr>
+                <tr th:each="felhasznalo : ${felhasznalok}">
+                    <!-- Minden sor külön form -->
+                    <form th:action="@{/update/{id}(id=${felhasznalo.id})}" method="post">
+                        <td>
+                            <!-- ID mező, csak olvasható -->
+                            <input type="text" name="id" th:value="${felhasznalo.id}" readonly />
+                        </td>
+                        <td>
+                            <!-- Név mező, szerkeszthető -->
+                            <input type="text" name="nev" th:value="${felhasznalo.nev}" />
+                        </td>
+                        <td>
+                            <!-- Email mező, szerkeszthető -->
+                            <input type="email" name="email" th:value="${felhasznalo.email}" />
+                        </td>
+                        <td>
+                            <!-- Mentés gomb az adott sorhoz -->
+                            <button type="submit" class="button">Mentés</button>
+            
+                            <!-- Törlés gomb az adott sorhoz -->
+                            <form th:action="@{/delete/{id}(id=${felhasznalo.id})}" method="post" style="display:inline;">
+                                <input type="hidden" name="id" th:value="${felhasznalo.id}" />
+                                <button type="submit" class="button">Törlés</button>
+                            </form>
+                        </td>
+                    </form>
+                </tr>
+                
+
+            </table>
+        </div>
+
+        <!-- Szállások kezelése -->
+        <div class="admin-section">
+            <h2>Szállások kezelése</h2>
+        
+            <table class="admin-table">
+
+                <tr>
+                    <th>ID</th>
+                    <th>Név</th>
+                    <th>Írányítószám</th>
+                    <th>Város</th>
+                    <th>Utca</th>
+                    <th>Ár</th>
+                    <th>Műveletek</th>
+                </tr>
+                <tr th:each="szallas : ${szallasok}">
+
+                    <form th:action="@{/update/{id}(id=${szallas.id})}" method="post">
+                        <td><input type="text" name="id" th:value="${szallas.id}" readonly /></td>
+                        <td><input type="text" name="nev" th:value="${szallas.nev}" /></td>
+                        <td><input type="text" name="isz" th:value="${szallas.isz}" /></td>
+                        <td><input type="text" name="varos" th:value="${szallas.varos}" /></td>
+                        <td><input type="text" name="utca" th:value="${szallas.utca}" /></td>
+                        <td><input type="number" name="ar" th:value="${szallas.ar}" /></td>
+                        <td>
+                            <button type="submit" class="button">Mentés</button>
+                            <form th:action="@{/delete/{id}(id=${szallas.id})}" method="post" style="display:inline;">
+                                <input type="hidden" name="id" th:value="${szallas.id}" />
+                                <button type="submit" class="button">Törlés</button>
+                            </form>
+                        </td>
+                    </form>
+                </tr></table>
+        </div>
+
+        <!-- Foglalások kezelése -->
+        <div class="admin-section">
+    <h2>Foglalások kezelése</h2>
+
+    <table class="admin-table">
+
+        <tr>
+            <th>ID</th>
+            <th>Felhasználó</th>
+            <th>Szállás</th>
+            <th>Kezdet</th>
+            <th>Vége</th>
+            <th>Állapot</th>
+            <th>Műveletek</th>
+        </tr> <tr th:each="foglalas : ${foglalasok}">
+            <form th:action="@{/update/{id}(id=${foglalas.id})}" method="post">
+                <td><input type="text" name="id" th:value="${foglalas.id}" readonly /></td>
+                <td><input type="text" name="felhasznaloId" th:value="${foglalas.felhasznaloId}" /></td>
+                <td><input type="text" name="szallasId" th:value="${foglalas.szallasId}" /></td>
+                <td><input type="date" name="kezdet" th:value="${foglalas.kezdet}" /></td>
+                <td><input type="date" name="veg" th:value="${foglalas.veg}" /></td>
+                <td><input type="text" name="allapot" th:value="${foglalas.allapot}" /></td>
+                <td>
+                    <button type="submit" class="button">Mentés</button>
+                    <form th:action="@{/delete/{id}(id=${foglalas.id})}" method="post" style="display:inline;">
+                        <input type="hidden" name="id" th:value="${foglalas.id}" />
+                        <button type="submit" class="button">Törlés</button>
+                    </form>
+                </td>
+            </form>
+        </tr> </table>
+</div>
+
+    </div>
+
+    <footer>
+        <div class="footer-column">
+            <h3 class="footer-title">Rólunk</h3>
+            <ul class="footer-list">
+                <li class="footer-list-item"><a href="https://git-okt.sed.inf.szte.hu/2024-ib153i-3-szallas" target="_blank">GitLab elérhetőség</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3 class="footer-title">Nem vagy még tag?</h3>
+            <ul class="footer-list">
+                <li class="footer-list-item"><a href="/register">Regisztráció</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3 class="footer-title">Kérdésed van?</h3>
+            <ul class="footer-list">
+                <li class="footer-list-item"><a href="/contact">Kapcsolat</a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+
+</html>

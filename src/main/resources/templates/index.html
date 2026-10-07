@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kezdőlap</title>
+    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="./contact.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul class="navbar">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/">Kezdőlap</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/szallasok">Szállások</a>
+                </li>
+                <li sec:authorize="hasAuthority('ROLE_vendeglato')" class="nav-item">
+                    <a class="nav-link" href="/add">Szállás létrehozása</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">Kapcsolat</a>
+                </li>
+                <li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item">
+                    <a class="nav-link" href="/admin">ADMIN</a>
+                </li>
+                <li sec:authorize="!isAuthenticated()" class="nav-item" style="float:right">
+                    <a class="nav-link active" href="/login">Bejelentkezés</a>
+                </li>
+                <li sec:authorize="!isAuthenticated()" class="nav-item" style="float:right">
+                    <a class="nav-link" href="/register">Regisztráció</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item" style="float:right">
+                    <a class="nav-link" href="/profil">Profil</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item" style="float:right">
+                    <a class="nav-link" href="/logout">Kijelentkezés</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Foglalj szállást még ma</h1>
+        <p class="subheading">Keress szállásadóink kínálatából</p>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="Hová mennél?">
+            <button class="search-button">Keresés</button>
+        </div>
+
+        <div class="image-banner">
+            <img src="./kepek/fooldalkep.jpg" alt="Szállás kép">
+        </div>
+       
+        <div class="container">
+            <h2>Felhasználóink értékelése</h2>
+            <div class="ratings-section">
+                <div class="rating-card" th:each="ertekeles : ${ertekelesek}">
+                    <div class="user-avatar">
+                        <img th:src="@{/kepek/felhasznalokep.png}" alt="Felhasználó képe">
+                    </div>
+                    <div class="rating-details">
+                        <p class="rating-date">
+                            <strong>Dátum:</strong> <span th:text="${ertekeles.mikor}">2024-01-12</span>
+                        </p>
+                        <p class="rating-score">
+                            <strong>Értékelés:</strong> <span th:text="${ertekeles.ertekeles}">5</span>/5
+                        </p>
+                        <p class="rating-message" th:text="${ertekeles.uzenet}">
+                            Ez a hely nagyon csúcsszuper volt!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <footer>
+        <div class="footer-column">
+            <h3 class="footer-title">Rólunk</h3>
+            <ul class="footer-list">
+                <li class="footer-list-item"><a href="https://git-okt.sed.inf.szte.hu/2024-ib153i-3-szallas" target="_blank">GitLab elérhetőség</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3 class="footer-title">Nem vagy még tag?</h3>
+            <ul class="footer-list">
+                <li class="footer-list-item"><a href="/register">Regisztráció</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3 class="footer-title">Kérdésed van?</h3>
+            <ul class="footer-list">
+                <li class="footer-list-item"><a href="/contact">Kapcsolat</a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>

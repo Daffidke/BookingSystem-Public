@@ -1,0 +1,103 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e6f7ff;
+    color: #333;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+}
+
+h1 {
+    color: #007acc;
+    text-align: center;
+    font-size: 2.5em;
+}
+
+.subheading {
+    text-align: center;
+    color: #666;
+    font-size: 1.2em;
+    margin-top: -10px;
+}
+
+.search-bar {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.search-bar input {
+    padding: 10px;
+    width: 50%;
+    border-radius: 5px;
+    border: 1px solid #b3e0ff;
+}
+
+.search-button {
+    padding: 10px 20px;
+    background-color: #007acc;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.search-button:hover {
+    background-color: #005c99;
+}
+
+.image-banner {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.image-banner img {
+    width: 100%;
+    width: 1000px;
+    height: 500px;
+    border-radius: 10px;
+}
+
+h2 {
+    color: #007acc;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.ratings-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.rating-card {
+    width: calc(33.33% - 40px);
+    background-color: #ffffff;
+    border: 1px solid #b3e0ff;
+    border-radius: 8px;
+    text-align: center;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.rating-card img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.rating-card p {
+    margin: 5px 0;
+    color: #333;
+}
+
+.rating-card p:nth-child(3) {
+    font-size: 1.2em;
+    color: #f5a623;
+}

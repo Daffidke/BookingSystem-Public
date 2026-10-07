@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Szállás Adatok</title>
+    <link rel="stylesheet" href="./szallasok.css">
+    <link rel="stylesheet" href="./contact.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul class="navbar">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Kezdőlap</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/szallasok">Szállások</a>
+                </li>
+                <li sec:authorize="hasAuthority('ROLE_vendeglato')" class="nav-item">
+                    <a class="nav-link" href="/add">Szállás létrehozása</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">Kapcsolat</a>
+                </li>
+                <li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item">
+                    <a class="nav-link" href="/admin">ADMIN</a>
+                </li>
+                <li sec:authorize="!isAuthenticated()" class="nav-item" style="float:right">
+                    <a class="nav-link active" href="/login">Bejelentkezés</a>
+                </li>
+                <li sec:authorize="!isAuthenticated()" class="nav-item" style="float:right">
+                    <a class="nav-link" href="/register">Regisztráció</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item" style="float:right">
+                    <a class="nav-link" href="/profil">Profil</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item" style="float:right">
+                    <a class="nav-link" href="/logout">Kijelentkezés</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <div class="main-content">
+            <h1 style="text-align: center; color: #007acc;">Adatok</h1>
+            <div class="accommodation-details" th:each="szallas : ${szallasok}">
+                <div class="accommodation-card">
+                    <img th:src="./kepek/szobakep.jpg" alt="Szállás kép" style="width: 100%; height: auto; border-radius: 8px;">
+                    <div class="accommodation-info">
+                        <h2 th:text="${szallas.nev}" style="color: #333; text-align: center;">Szállás neve</h2>
+                        <p><strong>Ár:</strong> <span th:text="${szallas.ar}"></span> Ft/Fő/Éj</p>
+                        <p><strong>Leírás:</strong> <span th:text="${szallas.leiras}">Szállás leírása</span></p>
+                        <p><strong>Utca:</strong> <span th:text="${szallas.leiras}">Utca</span></p>
+                        <p><strong>Irányítószám:</strong> <span th:text="${szallas.leiras}">Szállás leírása</span></p>
+                        <p><strong>Város:</strong> <span th:text="${szallas.leiras}">Szállás leírása</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-column">
+            <h3 class="footer-title">Rólunk</h3>
+            <ul class="footer-list">
+                <li class="footer-list-item"><a href="https://git-okt.sed.inf.szte.hu/2024-ib153i-3-szallas" target="_blank">GitLab elérhetőség</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3 class="footer-title">Nem vagy még tag?</h3>
+            <ul class="footer-list">
+                <li class="footer-list-item"><a href="/register">Regisztráció</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3 class="footer-title">Kérdésed van?</h3>
+            <ul class="footer-list">
+                <li class="footer-list-item"><a href="/contact">Kapcsolat</a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>

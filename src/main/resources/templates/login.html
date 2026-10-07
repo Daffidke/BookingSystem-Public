@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Login</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel='stylesheet' href="./login.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul class="navbar">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Kezdőlap</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/szallasok">Szállások</a>
+                </li>
+                <li sec:authorize="hasAuthority('ROLE_vendeglato')" class="nav-item">
+                    <a class="nav-link" href="/add">Szállás létrehozása</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">Kapcsolat</a>
+                </li>
+                <li sec:authorize="hasAuthority('ROLE_ADMIN')" class="nav-item">
+                    <a class="nav-link" href="/admin">ADMIN</a>
+                </li>
+                <li sec:authorize="!isAuthenticated()" class="nav-item" style="float:right">
+                    <a class="nav-link active" href="/login">Bejelentkezés</a>
+                </li>
+                <li sec:authorize="!isAuthenticated()" class="nav-item" style="float:right">
+                    <a class="nav-link" href="/register">Regisztráció</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item" style="float:right">
+                    <a class="nav-link" href="/profil">Profil</a>
+                </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item" style="float:right">
+                    <a class="nav-link" href="/logout">Kijelentkezés</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>Bejelentkezés</h1>
+        <div class="form-container">
+            <form action="/loginuser" th:action="@{/loginuser}" method="post">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="password">Jelszó:</label>
+                <input type="password" id="password" name="password" required>
+
+                <button type="submit" class="button">Bejelentkezés</button>
+                <input type="hidden" name="_csrf" value="${_csrf.token}" />
+            </form>
+            <p class="switch-page">Nincs még fiókja? <a href="/register">Regisztráció</a></p>
+            <div th:if="${param.error}" style="text-align: center;">
+                 <p style="color: red;">Hibás felhasználónév vagy jelszó</p>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="footer-column">
+           <h3 class="footer-title">Rólunk</h3>
+           <ul class="footer-list">
+              <li class="footer-list-item">
+                 <a href="https://git-okt.sed.inf.szte.hu/2024-ib153i-3-szallas" target="_blank">GitLab elérhetőség</a>
+              </li>
+           </ul>
+        </div>
+        <div class="footer-column">
+           <h3 class="footer-title">Nem vagy még tag?</h3>
+           <ul class="footer-list">
+              <li class="footer-list-item">
+                 <a href="/register">Regisztráció</a>
+              </li>
+           </ul>
+        </div>
+        <div class="footer-column">
+           <h3 class="footer-title">Kérdésed van?</h3>
+           <ul class="footer-list">
+              <li class="footer-list-item">
+                 <a href="/contact">Kapcsolat</a>
+              </li>
+           </ul>
+        </div>
+     </footer>
+</body>
+</html>
